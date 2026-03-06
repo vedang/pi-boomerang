@@ -4,12 +4,7 @@
   "description": "Token-efficient autonomous task execution with context collapse",
   "type": "module",
   "keywords": ["pi-package"],
-  "files": [
-    "index.ts",
-    "README.md",
-    "CHANGELOG.md",
-    "banner.png"
-  ],
+  "files": ["index.ts", "README.md", "CHANGELOG.md", "banner.png"],
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest"
