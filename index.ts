@@ -1922,10 +1922,4 @@ export default function (pi: ExtensionAPI) {
     clearState();
     updateStatus(ctx);
   });
-
-  pi.on("session_switch", async (_event, ctx) => {
-    await restoreModelAndThinking(ctx);
-    clearState();
-    updateStatus(ctx);
-  });
 }

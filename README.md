@@ -73,7 +73,7 @@ Status indicator shows progress as `chain 1/3`, `chain 2/3`, etc.
 
 ## Rethrow Execution
 
-Run the full task multiple times with context collapse between runs:
+Use `--rethrow N` to run the full task N times, collapsing context between each pass:
 
 ```bash
 /boomerang /deslop --rethrow 3
@@ -81,11 +81,34 @@ Run the full task multiple times with context collapse between runs:
 /boomerang /scout -> /impl --rethrow 2 -- "auth module"
 ```
 
-Each rethrow executes the full task, collapses to the same anchor point, and continues with fresh context plus accumulated summaries from prior rethrows.
+How it works in boomerang mode:
 
-File changes persist on disk across rethrows. Boomerang consumes `--rethrow N` directly. For compatibility, `--loop N` is treated as an alias for `--rethrow N` in boomerang commands, so loop flags are not injected into the rendered prompt body. If both flags are present, `--rethrow` takes precedence and `--loop` is ignored.
+- `N` is required and must be `1-999`
+- each pass does: execute task -> collapse to summary -> start next pass
+- file changes persist on disk across passes
+- each new pass sees accumulated summaries from prior passes, not full raw turn history
+- rethrow uses an internal auto-anchor at the current leaf for that run
 
-Status shows `rethrow 2/3` and for chain rethrows `rethrow 2/3 · chain 1/2`. Cancel mid-rethrow with `/boomerang-cancel`.
+Status shows `rethrow 2/3`, and for chain rethrows `rethrow 2/3 · chain 1/2`.
+
+`--loop N` compatibility in boomerang:
+
+- `/boomerang ... --loop N` is treated as alias for `/boomerang ... --rethrow N`
+- if both flags are present, `--rethrow` wins and `--loop` is ignored
+- boomerang strips loop metadata from the rendered task so inner prompt args do not receive `--loop` tokens
+- bare `--loop` (no count) is invalid in boomerang and returns `--loop requires a count (1-999)`
+
+Examples:
+
+```bash
+# alias -> rethrow
+/boomerang /deslop --loop 2
+
+# mixed flags: --rethrow takes precedence
+/boomerang /deslop --rethrow 3 --loop 9
+```
+
+Cancel mid-rethrow with `/boomerang-cancel`.
 
 ## Prompt Templates
 

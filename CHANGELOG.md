@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-04-03
+
+### Changed
+
+- Migrated boomerang session reset handling to the `session_start` lifecycle event and removed the legacy `session_switch` hook.
+- Clarified `--rethrow` and `--loop` boomerang behavior in the README, including count requirements, alias precedence, and pass-by-pass execution details.
+
 ## [0.4.0] - 2026-03-18
 
 ### Added

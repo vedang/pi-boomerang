@@ -348,7 +348,7 @@ describe("Boomerang Extension", () => {
   }
 
   async function fireSessionSwitch() {
-    await getHandler("session_switch")({}, mockCtx);
+    await getHandler("session_start")({ reason: "resume" }, mockCtx);
   }
 
   function notifyMessages() {
