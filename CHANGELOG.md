@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.3] - 2026-04-04
+
+### Changed
+
+- Added a `promptSnippet` for the `boomerang` tool so Pi 0.59+ includes it in the default tool prompt section and reliably discovers it during autonomous runs.
+
 ## [0.4.2] - 2026-04-03
 
 ### Fixed

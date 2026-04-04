@@ -1652,6 +1652,8 @@ export default function (pi: ExtensionAPI) {
         "Execute a task autonomously in boomerang mode, then collapse context to a summary. " +
         "Pass a task string to run it. Use --rethrow N to rerun the full task with context collapse between rethrows. " +
         "If no task is provided, toggles an anchor/collapse point for manual use.",
+      promptSnippet:
+        "Use when the user asks to run an autonomous boomerang pass with context collapse, or explicitly asks for boomerang mode/rethrows.",
       parameters: Type.Object({
         task: Type.Optional(Type.String({ description: "Task to execute. Supports --rethrow N for multi-pass execution with collapse between rethrows." })),
       }),
