@@ -208,9 +208,11 @@ The problem: LLMs cut corners when told about resource limits. "You're at 80% ca
 
 pi-boomerang keeps the agent unaware. It sees the task, works thoroughly, collapse happens invisibly.
 
-## Interaction with Rewind Extension
+## File State
 
-Independent. pi-boomerang collapses *context/tokens*. Rewind restores *files*. Use together: boomerang saves tokens, rewind fixes broken files.
+Boomerang only collapses *context/tokens*—it never touches file state. All file changes made during the task are preserved. This is intentional; restoring files after the task would undo the work boomerang just completed.
+
+The [rewind](https://github.com/badlogic/pi-mono/tree/main/extensions/rewind) extension is **not required**. Install it separately if you want to manually restore previous file states via `/tree` or `/fork`. Boomerang operates independently; rewind will not prompt during boomerang-triggered collapses.
 
 ## Limitations
 
