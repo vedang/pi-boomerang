@@ -13,7 +13,7 @@ import { join, resolve } from "node:path";
 import type { ThinkingLevel } from "@mariozechner/pi-agent-core";
 import type { ExtensionAPI, ExtensionContext, ExtensionCommandContext, SessionEntry, SessionManager } from "@mariozechner/pi-coding-agent";
 import type { AssistantMessage, Model } from "@mariozechner/pi-ai";
-import { Type } from "@sinclair/typebox";
+import { Type } from "typebox";
 
 interface BoomerangConfig {
   toolEnabled?: boolean;
