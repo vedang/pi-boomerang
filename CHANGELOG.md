@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.5] - 2026-04-30
+
+### Fixed
+- Expanded completed boomerang branch summaries by default so users no longer need to press Ctrl+O to reveal details.
+- Avoided expanding the UI if a rethrow collapse is cancelled before boomerang still owns the collapse.
+
 ## [0.4.4] - 2026-04-22
 
 ### Fixed

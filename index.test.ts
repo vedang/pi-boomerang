@@ -179,6 +179,7 @@ describe("Boomerang Extension", () => {
   let uiMock: {
     notify: ReturnType<typeof vi.fn>;
     setStatus: ReturnType<typeof vi.fn>;
+    setToolsExpanded: ReturnType<typeof vi.fn>;
     theme: { fg: (color: string, text: string) => string };
   };
   let isIdleMock: ReturnType<typeof vi.fn>;
@@ -397,6 +398,7 @@ describe("Boomerang Extension", () => {
     uiMock = {
       notify: vi.fn(),
       setStatus: vi.fn(),
+      setToolsExpanded: vi.fn(),
       theme: { fg: (color: string, text: string) => `[${color}]${text}` },
     };
 
@@ -1322,6 +1324,29 @@ describe("Boomerang Extension", () => {
       expect(navigateTreeCalls).toHaveLength(1);
     });
 
+    it("does not expand details when cancelled during rethrow collapse", async () => {
+      writePrompt("user", "task", "Task");
+      let finishCollapse: (() => void) | null = null;
+      const collapsingCtx = createCommandCtx({
+        navigateTree: vi.fn((targetId: string, options: { summarize?: boolean }) => {
+          navigateTreeCalls.push({ targetId, options });
+          return new Promise<{ cancelled: boolean }>((resolve) => {
+            finishCollapse = () => resolve({ cancelled: false });
+          });
+        }),
+      });
+
+      const running = runBoomerang("/task --rethrow 2", collapsingCtx);
+      while (!finishCollapse) {
+        await Promise.resolve();
+      }
+      await runCancel(collapsingCtx);
+      finishCollapse();
+      await running;
+
+      expect(uiMock.setToolsExpanded).not.toHaveBeenCalled();
+    });
+
     it("stops when cancelled before a rethrow turn starts", async () => {
       writePrompt("user", "task", "Task");
       (mockPi.sendUserMessage as ReturnType<typeof vi.fn>).mockImplementation((content: string) => {
@@ -1513,6 +1538,14 @@ describe("Boomerang Extension", () => {
       expect(sentMessages).toEqual(["Commit fix auth"]);
       expect(navigateTreeCalls).toHaveLength(1);
       expect(currentModel).toEqual(model("anthropic", "claude-opus-4-6"));
+    });
+
+    it("expands boomerang summary details after collapse", async () => {
+      await runBoomerang("fix auth");
+      addAssistantTextEntry("Done.");
+      await triggerAgentEnd();
+
+      expect(uiMock.setToolsExpanded).toHaveBeenCalledWith(true);
     });
 
     it("sets the global collapse flag during template collapse", async () => {

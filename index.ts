@@ -1190,6 +1190,9 @@ export default function (pi: ExtensionAPI) {
           break;
         }
         if (!boomerangActive || !rethrowState) break;
+        if (ctx.hasUI) {
+          ctx.ui.setToolsExpanded(true);
+        }
 
         if (lastTaskSummary) {
           rethrowState.rethrowSummaries.push(lastTaskSummary);
@@ -1800,6 +1803,9 @@ export default function (pi: ExtensionAPI) {
         try {
           const entryId = sm.branchWithSummary(toolAnchorEntryId, summary);
           justCollapsedEntryId = entryId;
+          if (ctx.hasUI) {
+            ctx.ui.setToolsExpanded(true);
+          }
           ctx.ui.notify("Context collapsed (agent sees it; /reload to refresh display)", "info");
         } catch (err) {
           ctx.ui.notify(`Failed to collapse: ${String(err)}`, "error");
@@ -1820,6 +1826,9 @@ export default function (pi: ExtensionAPI) {
         if (result.cancelled) {
           ctx.ui.notify("Collapse cancelled", "warning");
         } else {
+          if (ctx.hasUI) {
+            ctx.ui.setToolsExpanded(true);
+          }
           ctx.ui.notify("Boomerang complete. Context collapsed.", "info");
         }
       } catch (err) {
@@ -1847,6 +1856,9 @@ export default function (pi: ExtensionAPI) {
       } else if (!collapseStillOwned) {
         // State changed mid-collapse (for example via /boomerang-cancel).
       } else {
+        if (ctx.hasUI) {
+          ctx.ui.setToolsExpanded(true);
+        }
         if (anchorEntryId !== null && targetId === anchorEntryId && lastTaskSummary) {
           anchorSummaries.push(lastTaskSummary);
         }
